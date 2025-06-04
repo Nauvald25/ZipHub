@@ -1,0 +1,791 @@
+<!-- opsi 1 -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ziphub</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body class="bg-gray-900 text-white">
+    <div class="flex items-center justify-center min-h-screen px-4">
+      <div class="bg-gray-800 rounded-lg shadow-lg p-8 w-full max-w-xl">
+        <h1 class="text-3xl font-bold text-center mb-4">Ziphub</h1>
+        <p class="text-center text-gray-400 mb-6">Download any folder from GitHub with ease. Paste the repo URL, select format, and download.</p>
+
+        <!-- Input Field (with Drag & Drop area)
+        <label for="repoUrl" class="block mb-1 text-sm font-semibold">GitHub Repository URL</label>
+        <div id="drop-area" class="border-2 border-dashed border-gray-600 rounded p-3 mb-4 bg-gray-700 hover:bg-gray-600 transition cursor-pointer">
+          <input type="text" id="repoUrl" placeholder="https://github.com/user/repo" class="w-full bg-transparent outline-none" />
+          <p class="text-sm text-gray-400 mt-1">Drag & drop a GitHub URL here or paste manually.</p>
+        </div>
+
+        <!-- Select Format
+        <label for="format" class="block mb-1 text-sm font-semibold">Download Format</label>
+        <select id="format" class="w-full mb-6 bg-gray-700 text-white rounded px-4 py-2">
+          <option value="zip">ZIP</option>
+          <option value="tar.gz">TAR.GZ</option>
+          <option value="tar">TAR</option>
+        </select>
+
+        <!-- Download Button -->
+        <button onclick="downloadFolder()" class="w-full bg-purple-600 hover:bg-purple-700 transition py-2 rounded font-semibold flex justify-center items-center">
+          ⬇️ Download Folder
+        </button>
+
+        <!-- Error Message -->
+        <div id="error-message" class="mt-4 text-red-400 text-sm hidden"></div>
+
+        <!-- Footer -->
+        <p class="mt-6 text-center text-xs text-gray-500">© 2025 Ziphub. Built by Muhamad Nauval Daifulloh.</p>
+      </div>
+    </div>
+
+    <script>
+      function showError(message) {
+        const errorDiv = document.getElementById("error-message");
+        errorDiv.textContent = message;
+        errorDiv.classList.remove("hidden");
+      }
+
+      function downloadFolder() {
+        const repoUrl = document.getElementById("repoUrl").value.trim();
+        const format = document.getElementById("format").value;
+
+        if (!repoUrl || !repoUrl.startsWith("https://github.com/")) {
+          showError("Invalid GitHub URL. Please paste a correct GitHub repository link.");
+          return;
+        }
+
+        try {
+          const match = repoUrl.match(/https:\/\/github\.com\/([^\/]+)\/([^\/]+)(?:\/|$)/);
+          if (!match) {
+            showError("URL tidak valid. Gunakan format seperti https://github.com/user/repo");
+            return;
+          }
+
+          const user = match[1];
+          const repo = match[2];
+          const branch = "main"; // Default branch
+
+          const downloadLink = `https://github.com/${user}/${repo}/archive/refs/heads/${branch}.${format}`;
+
+          showError("");
+          window.location.href = downloadLink;
+
+        } catch (error) {
+          showError("Terjadi kesalahan saat mencoba mengunduh folder.");
+        }
+      }
+
+      const dropArea = document.getElementById("drop-area");
+
+      dropArea.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropArea.classList.add("bg-gray-600");
+      });
+
+      dropArea.addEventListener("dragleave", () => {
+        dropArea.classList.remove("bg-gray-600");
+      });
+
+      dropArea.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dropArea.classList.remove("bg-gray-600");
+        const data = e.dataTransfer.getData("text/plain");
+        if (data.startsWith("https://github.com/")) {
+          document.getElementById("repoUrl").value = data;
+          downloadFolder();
+        } else {
+          showError("Dropped content is not a valid GitHub URL.");
+        }
+      });
+    </script>
+  </body>
+</html> 
+ -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- opsi ke dua -->
+
+
+<!-- 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ziphub</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body class="bg-gray-900 text-white">
+<div class="flex items-center justify-center min-h-screen px-4">
+  <div class="bg-gray-800 rounded-lg shadow-lg p-8 w-full max-w-xl overflow-y-auto">
+    <h1 class="text-3xl font-bold text-center mb-4">Ziphub</h1>
+    <p class="text-center text-gray-400 mb-6">Download any repository from GitHub with ease. Paste the repo URL, then select branch to download or browse files.</p>
+
+    <!-- Loading Indicator -->
+    <div id="loading" class="hidden mb-4 flex justify-center items-center">
+      <div class="border-4 border-blue-500 border-t-transparent rounded-full w-8 h-8 animate-spin"></div>
+    </div>
+
+    <!-- Input URL -->
+    <label for="repoUrl" class="block mb-1 text-sm font-semibold">GitHub Repository URL</label>
+    <div id="drop-area" class="border-2 border-dashed border-gray-600 rounded p-3 mb-4 bg-gray-700 hover:bg-gray-600 transition cursor-pointer">
+      <input type="text" id="repoUrl" placeholder="https://github.com/user/repo" class="w-full bg-transparent outline-none" />
+      <p class="text-sm text-gray-400 mt-1">Drag & drop a GitHub URL here or paste manually.</p>
+    </div>
+
+    <!-- Fetch Branches Button -->
+    <button onclick="fetchBranches()" class="w-full mb-4 bg-blue-600 hover:bg-blue-700 transition py-2 rounded font-semibold">Fetch Branches</button>
+
+    <!-- Branch Dropdown -->
+    <div id="branch-container" class="mb-4 hidden">
+      <label for="branchSelect" class="block mb-1 text-sm font-semibold">Pilih Branch untuk di Download</label>
+      <select id="branchSelect" class="w-full bg-gray-700 text-white rounded px-4 py-2"></select>
+    </div>
+
+    <!-- Download ZIP Button -->
+    <button onclick="downloadSelectedBranch()" class="w-full bg-purple-600 hover:bg-purple-700 transition py-2 rounded font-semibold flex justify-center items-center mb-4">
+      ⬇️ Download Branch Terpilih (ZIP)
+    </button>
+
+    <!-- Browse Files Button -->
+    <button onclick="startBrowsing()" class="w-full mb-4 bg-green-600 hover:bg-green-700 transition py-2 rounded font-semibold flex justify-center items-center mb-4">
+      📂 Browse Files
+    </button>
+
+    <!-- Back Button (hidden by default) -->
+    <button id="backBtn" onclick="goBack()" class="w-full mb-4 bg-gray-500 hover:bg-gray-600 transition py-1 rounded font-semibold hidden">
+      🔙 Kembali
+    </button>
+
+    <!-- File/Folder List -->
+    <div class="mb-4" id="file-list" style="max-height:300px; overflow-y:auto;">
+      <h2 class="text-lg font-semibold mb-2">Daftar File / Folder</h2>
+      <!-- Isi akan muncul di sini -->
+    </div>
+
+    <!-- Error Message -->
+    <div id="error-message" class="mt-4 text-red-400 text-sm hidden"></div>
+
+    <!-- Footer -->
+    <p class="mt-6 text-center text-xs text-gray-500">© 2025 Ziphub. Built by Muhamad Nauval Daifulloh.</p>
+  </div>
+</div>
+
+<script>
+  let currentRepo = { user: "", repo: "" };
+  let currentBranch = "";
+  let currentPath = ""; // Path folder saat ini
+  let historyStack = []; // Untuk navigasi folder
+
+  function showError(message) {
+    const errorDiv = document.getElementById("error-message");
+    errorDiv.textContent = message;
+    errorDiv.classList.remove("hidden");
+  }
+
+  function hideError() {
+    document.getElementById("error-message").classList.add("hidden");
+  }
+
+  async function fetchBranches() {
+    document.getElementById("loading").classList.remove("hidden");
+    hideError();
+    document.getElementById("file-list").innerHTML = "";
+    currentPath = "";
+    document.getElementById("backBtn").classList.add("hidden");
+    historyStack = [];
+
+    const url = document.getElementById("repoUrl").value.trim();
+    if (!url.startsWith("https://github.com/")) {
+      showError("URL tidak valid. Pastikan menggunakan format https://github.com/user/repo");
+      document.getElementById("loading").classList.add("hidden");
+      return;
+    }
+    const match = url.match(/https:\/\/github\.com\/([^\/]+)\/([^\/]+)(?:\/|$)/);
+    if (!match) {
+      showError("URL tidak valid. Pastikan menggunakan format https://github.com/user/repo");
+      document.getElementById("loading").classList.add("hidden");
+      return;
+    }
+    currentRepo.user = match[1];
+    currentRepo.repo = match[2];
+
+    try {
+      const response = await fetch(`https://api.github.com/repos/${currentRepo.user}/${currentRepo.repo}`);
+      if (!response.ok) {
+        showError("Gagal mengambil data repository. Pastikan repository publik dan URL benar.");
+        return;
+      }
+      const branches = await fetchBranchesList(currentRepo.user, currentRepo.repo);
+      if (branches.length === 0) {
+        showError("Tidak ditemukan branch untuk repository ini.");
+        document.getElementById("branch-container").classList.add("hidden");
+        return;
+      }
+      populateBranchDropdown(branches);
+      document.getElementById("branch-container").classList.remove("hidden");
+      hideError();
+    } catch (error) {
+      showError("Terjadi kesalahan saat mengambil data repository.");
+      console.error(error);
+    } finally {
+      document.getElementById("loading").classList.add("hidden");
+    }
+  }
+
+  async function fetchBranchesList(user, repo) {
+    const url = `https://api.github.com/repos/${user}/${repo}/branches`;
+    try {
+      const res = await fetch(url);
+      if (res.ok) {
+        const branches = await res.json();
+        return branches.map(b => b.name);
+      } else {
+        showError("Gagal mengambil daftar branch.");
+      }
+    } catch (err) {
+      console.error(err);
+      showError("Terjadi kesalahan saat mengambil daftar branch.");
+    }
+    return [];
+  }
+
+  function populateBranchDropdown(branches) {
+    const select = document.getElementById("branchSelect");
+    select.innerHTML = "";
+    branches.forEach(branch => {
+      const option = document.createElement("option");
+      option.value = branch;
+      option.textContent = branch;
+      select.appendChild(option);
+    });
+  }
+
+  function downloadSelectedBranch() {
+    hideError();
+    const branch = document.getElementById("branchSelect").value;
+    if (!branch) {
+      showError("Pilih branch terlebih dahulu.");
+      return;
+    }
+    const urlZip = `https://github.com/${currentRepo.user}/${currentRepo.repo}/archive/refs/heads/${branch}.zip`;
+    const link = document.createElement('a');
+    link.href = urlZip;
+    link.download = `${currentRepo.repo}-${branch}.zip`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  // Fungsi untuk mulai browsing dari root
+  function startBrowsing() {
+    // Pastikan branch sudah dipilih
+    const branch = document.getElementById("branchSelect").value;
+    if (!branch) {
+      showError("Pilih branch terlebih dahulu");
+      return;
+    }
+    currentPath = "";
+    historyStack = [];
+    document.getElementById("backBtn").classList.add("hidden");
+    fetchFolderContents();
+  }
+
+  // Fungsi fetch isi folder
+  async function fetchFolderContents() {
+    document.getElementById("loading").classList.remove("hidden");
+    hideError();
+
+    const branch = document.getElementById("branchSelect").value;
+    if (!branch) {
+      showError("Pilih branch terlebih dahulu");
+      document.getElementById("loading").classList.add("hidden");
+      return;
+    }
+
+    try {
+      const url = `https://api.github.com/repos/${currentRepo.user}/${currentRepo.repo}/contents/${currentPath}?ref=${branch}`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("Gagal mengambil isi folder");
+      const data = await res.json();
+      displayFiles(data);
+    } catch (err) {
+      showError(err.message);
+    } finally {
+      document.getElementById("loading").classList.add("hidden");
+    }
+  }
+
+  function displayFiles(items) {
+    const container = document.getElementById("file-list");
+    container.innerHTML = "<h2 class='text-lg font-semibold mb-2'>Daftar File / Folder</h2>";
+
+    if (!items || items.length === 0) {
+      container.innerHTML += "<p class='text-sm'>Folder kosong.</p>";
+      return;
+    }
+
+    // Tampilkan tombol "Kembali" jika tidak di root
+    const backBtn = document.getElementById("backBtn");
+    if (currentPath) {
+      backBtn.classList.remove("hidden");
+    } else {
+      backBtn.classList.add("hidden");
+    }
+
+    items.forEach(item => {
+      const el = document.createElement("div");
+      el.className = "flex justify-between items-center p-2 bg-gray-700 rounded mb-1";
+
+      // Nama folder/file
+      const nameSpan = document.createElement("span");
+      nameSpan.textContent = item.name;
+      nameSpan.className = "cursor-pointer";
+
+      if (item.type === "dir") {
+        nameSpan.className += " font-semibold text-blue-400";
+        nameSpan.onclick = () => {
+          // Push current path ke history
+          if (!currentPath) {
+            currentPath = "";
+          }
+          historyStack.push(currentPath);
+          currentPath = item.path;
+          fetchFolderContents();
+        };
+      } else {
+        // File, bisa di klik untuk download
+        nameSpan.className += " hover:underline";
+        nameSpan.onclick = () => {
+          // langsung download
+          if (item.download_url) {
+            window.open(item.download_url, "_blank");
+          } else {
+            alert("File tidak tersedia untuk di download");
+          }
+        };
+      }
+
+      // Tombol download
+      const btnDownload = document.createElement("button");
+      btnDownload.textContent = "Download";
+      btnDownload.className = "ml-2 bg-green-500 px-2 py-1 rounded text-sm";
+      btnDownload.onclick = () => {
+        if (item.download_url) {
+          window.open(item.download_url, "_blank");
+        } else {
+          alert("File tidak tersedia untuk di download");
+        }
+      };
+
+      el.appendChild(nameSpan);
+      el.appendChild(btnDownload);
+      container.appendChild(el);
+    });
+  }
+
+  // Fungsi kembali ke folder sebelumnya
+  function goBack() {
+    if (historyStack.length > 0) {
+      currentPath = historyStack.pop();
+      fetchFolderContents();
+    } else {
+      currentPath = "";
+      fetchFolderContents();
+    }
+  }
+
+</script>
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!-- opsi finalprojekct -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ziphub</title>
+<!-- Tailwind CSS -->
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center px-4">
+  <div class="bg-gray-800 rounded-lg shadow-lg p-6 sm:p-8 w-full max-w-xl relative overflow-hidden">
+
+    <!-- Notifikasi, posisi tetap di atas tengah -->
+    <div id="notification" class="hidden fixed top-4 inset-x-1/2 transform -translate-x-1/2 max-w-md w-full z-50 px-4 py-3 bg-green-600 text-white rounded-lg text-sm md:text-base opacity-0 transition-opacity duration-300"></div>
+
+    <!-- Header dan isi lainnya -->
+    <h1 class="text-3xl md:text-4xl font-bold text-center mb-4">Ziphub</h1>
+    <p class="text-center text-gray-400 mb-6 text-sm md:text-base">
+      Download any repository from GitHub with ease. Paste the repo URL, then select branch to download or browse files.
+    </p>
+
+    <!-- Loading indicator -->
+    <div id="loading" class="hidden mb-4 flex justify-center items-center">
+      <div class="border-4 border-blue-500 border-t-transparent rounded-full w-8 h-8 animate-spin"></div>
+    </div>
+
+    <!-- Input URL -->
+    <label for="repoUrl" class="block mb-1 text-sm font-semibold">GitHub Repository URL</label>
+    <div id="drop-area" class="border-2 border-dashed border-gray-600 rounded p-3 mb-4 bg-gray-700 hover:bg-gray-600 transition cursor-pointer">
+      <input type="text" id="repoUrl" placeholder="https://github.com/user/repo" class="w-full bg-transparent outline-none text-sm" />
+      <p class="text-sm text-gray-400 mt-1">Drag & drop a GitHub URL here or paste manually.</p>
+    </div>
+
+    <!-- Fetch Branches Button -->
+    <button onclick="fetchBranches()" class="w-full mb-4 bg-blue-600 hover:bg-blue-700 transition py-2 rounded font-semibold text-sm md:text-base">Fetch Branches</button>
+
+    <!-- Branch Dropdown -->
+    <div id="branch-container" class="mb-4 hidden">
+      <label for="branchSelect" class="block mb-1 text-sm font-semibold">Pilih Branch untuk di Download</label>
+      <select id="branchSelect" class="w-full bg-gray-700 text-white rounded px-4 py-2 text-sm md:text-base"></select>
+    </div>
+
+    <!-- Download ZIP Button -->
+    <button onclick="downloadSelectedBranch()" class="w-full bg-purple-600 hover:bg-purple-700 transition py-2 rounded font-semibold flex justify-center items-center mb-4 text-sm md:text-base">
+      ⬇️ Download Branch Terpilih (ZIP)
+    </button>
+
+    <!-- Browse Files Button -->
+    <button onclick="startBrowsing()" class="w-full mb-4 bg-green-600 hover:bg-green-700 transition py-2 rounded font-semibold flex justify-center items-center mb-4 text-sm md:text-base">
+      📂 Browse Files
+    </button>
+
+    <!-- Kembali Button -->
+    <button id="backBtn" onclick="goBack()" class="w-full mb-4 bg-gray-500 hover:bg-gray-600 transition py-1 rounded font-semibold hidden text-sm md:text-base">
+      🔙 Kembali
+    </button>
+
+    <!-- Tombol Refresh -->
+    <button id="refreshBtn" class="absolute top-4 right-4 bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-xl transition flex items-center space-x-2 text-sm md:text-base" title="Refresh isi folder" onclick="fetchFolderContents()">
+      🔄 <span class="font-semibold">Refresh</span>
+    </button>
+
+    <!-- Daftar File / Folder -->
+    <div class="mb-4" id="file-list" style="max-height:300px; overflow-y:auto;">
+      <h2 class="text-lg font-semibold mb-2">Daftar File / Folder</h2>
+    </div>
+
+    <!-- Pesan Error -->
+    <div id="error-message" class="mt-4 text-red-400 text-sm hidden"></div>
+
+    <!-- Footer -->
+    <p class="mt-6 text-center text-xs text-gray-500">© 2025 Ziphub. Built by Muhamad Nauval Daifulloh.</p>
+  </div>
+
+<script>
+let currentRepo = { user: "", repo: "" };
+let currentBranch = "";
+let currentPath = "";
+let historyStack = [];
+
+function showError(message) {
+  const errorDiv = document.getElementById("error-message");
+  errorDiv.textContent = message;
+  errorDiv.classList.remove("hidden");
+}
+
+function hideError() {
+  document.getElementById("error-message").classList.add("hidden");
+}
+
+// Fungsi tampilkan notifikasi dengan animasi fade
+function showNotification(message) {
+  const notif = document.getElementById('notification');
+  notif.textContent = message;
+  notif.classList.remove('hidden');
+  // Mengaktifkan fade-in
+  notif.classList.remove('opacity-0');
+  notif.classList.add('opacity-100');
+
+  // Setelah 3 detik, fade out
+  setTimeout(() => {
+    notif.classList.remove('opacity-100');
+    notif.classList.add('opacity-0');
+    // Setelah fade out, sembunyikan
+    setTimeout(() => {
+      notif.classList.add('hidden');
+    }, 300); // Durasi fade out
+  }, 6000); // Tunda 3 detik
+}
+
+async function fetchBranches() {
+  document.getElementById("loading").classList.remove("hidden");
+  hideError();
+  document.getElementById("file-list").innerHTML = "";
+  currentPath = "";
+  document.getElementById("backBtn").classList.add("hidden");
+  historyStack = [];
+
+  const url = document.getElementById("repoUrl").value.trim();
+  if (!url.startsWith("https://github.com/")) {
+    showError("URL tidak valid. Pastikan menggunakan format https://github.com/user/repo");
+    document.getElementById("loading").classList.add("hidden");
+    return;
+  }
+  const match = url.match(/https:\/\/github\.com\/([^\/]+)\/([^\/]+)(?:\/|$)/);
+  if (!match) {
+    showError("URL tidak valid. Pastikan menggunakan format https://github.com/user/repo");
+    document.getElementById("loading").classList.add("hidden");
+    return;
+  }
+  currentRepo.user = match[1];
+  currentRepo.repo = match[2];
+
+  try {
+    const response = await fetch(`https://api.github.com/repos/${currentRepo.user}/${currentRepo.repo}`);
+    if (!response.ok) {
+      showError("Gagal mengambil data repository. Pastikan repository publik dan URL benar.");
+      return;
+    }
+    const branches = await fetchBranchesList(currentRepo.user, currentRepo.repo);
+    if (branches.length === 0) {
+      showError("Tidak ditemukan branch untuk repository ini.");
+      document.getElementById("branch-container").classList.add("hidden");
+      return;
+    }
+    populateBranchDropdown(branches);
+    document.getElementById("branch-container").classList.remove("hidden");
+    hideError();
+  } catch (error) {
+    showError("Terjadi kesalahan saat mengambil data repository.");
+    console.error(error);
+  } finally {
+    document.getElementById("loading").classList.add("hidden");
+  }
+}
+
+async function fetchBranchesList(user, repo) {
+  const url = `https://api.github.com/repos/${user}/${repo}/branches`;
+  try {
+    const res = await fetch(url);
+    if (res.ok) {
+      const branches = await res.json();
+      return branches.map(b => b.name);
+    } else {
+      showError("Gagal mengambil daftar branch.");
+    }
+  } catch (err) {
+    console.error(err);
+    showError("Terjadi kesalahan saat mengambil daftar branch.");
+  }
+  return [];
+}
+
+function populateBranchDropdown(branches) {
+  const select = document.getElementById("branchSelect");
+  select.innerHTML = "";
+  branches.forEach(branch => {
+    const option = document.createElement("option");
+    option.value = branch;
+    option.textContent = branch;
+    select.appendChild(option);
+  });
+}
+
+function downloadSelectedBranch() {
+  hideError();
+  const branch = document.getElementById("branchSelect").value;
+  if (!branch) {
+    showError("Pilih branch terlebih dahulu.");
+    return;
+  }
+  const urlZip = `https://github.com/${currentRepo.user}/${currentRepo.repo}/archive/refs/heads/${branch}.zip`;
+  const link = document.createElement('a');
+  link.href = urlZip;
+  link.download = `${currentRepo.repo}-${branch}.zip`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  showNotification("Terima kasih, file sudah di download, mohon tunggu sebentar....!");
+}
+
+function startBrowsing() {
+  const branch = document.getElementById("branchSelect").value;
+  if (!branch) {
+    showError("Pilih branch terlebih dahulu");
+    return;
+  }
+  currentPath = "";
+  historyStack = [];
+  document.getElementById("backBtn").classList.add("hidden");
+  fetchFolderContents();
+}
+
+async function fetchFolderContents() {
+  document.getElementById("loading").classList.remove("hidden");
+  hideError();
+
+  const branch = document.getElementById("branchSelect").value;
+  if (!branch) {
+    showError("Pilih branch terlebih dahulu");
+    document.getElementById("loading").classList.add("hidden");
+    return;
+  }
+
+  try {
+    const url = `https://api.github.com/repos/${currentRepo.user}/${currentRepo.repo}/contents/${currentPath}?ref=${branch}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("Gagal mengambil isi folder");
+    const data = await res.json();
+    displayFiles(data);
+  } catch (err) {
+    showError(err.message);
+  } finally {
+    document.getElementById("loading").classList.add("hidden");
+  }
+}
+
+function displayFiles(items) {
+  const container = document.getElementById("file-list");
+  container.innerHTML = "<h2 class='text-lg font-semibold mb-2'>Daftar File / Folder</h2>";
+
+  if (!items || items.length === 0) {
+    container.innerHTML += "<p class='text-sm'>Folder kosong.</p>";
+    return;
+  }
+
+  // Tampilkan tombol "Kembali" jika tidak di root
+  const backBtn = document.getElementById("backBtn");
+  if (currentPath) {
+    backBtn.classList.remove("hidden");
+  } else {
+    backBtn.classList.add("hidden");
+  }
+
+  // Tampilkan file/folder
+  items.forEach(item => {
+    const el = document.createElement("div");
+    el.className = "flex justify-between items-center p-2 bg-gray-700 rounded mb-1";
+
+    const nameSpan = document.createElement("span");
+    nameSpan.textContent = item.name;
+    nameSpan.className = "cursor-pointer flex-1";
+
+    if (item.type === "dir") {
+      nameSpan.classList.add("font-semibold", "text-blue-400");
+      nameSpan.onclick = () => {
+        if (!currentPath) currentPath = "";
+        historyStack.push(currentPath);
+        currentPath = item.path;
+        fetchFolderContents();
+      };
+    } else {
+      nameSpan.classList.add("hover:underline");
+      nameSpan.onclick = () => handleFileDownload(item.download_url);
+    }
+
+    const btnDownload = document.createElement("button");
+    btnDownload.textContent = "Download";
+    btnDownload.className = "ml-2 bg-green-500 px-2 py-1 rounded text-sm";
+    btnDownload.onclick = () => {
+      if (item.download_url) handleFileDownload(item.download_url);
+    };
+
+    el.appendChild(nameSpan);
+    el.appendChild(btnDownload);
+    container.appendChild(el);
+  });
+}
+
+function handleFileDownload(url) {
+  if (url) {
+    window.open(url, "_blank");
+    showNotification("Terima kasih, file sudah di download, mohon tunggu sebentar dan jangan lupa ikuti github saya!");
+  } else {
+    alert("File tidak tersedia untuk di download");
+  }
+}
+
+function goBack() {
+  if (historyStack.length > 0) {
+    currentPath = historyStack.pop();
+    fetchFolderContents();
+  } else {
+    currentPath = "";
+    fetchFolderContents();
+  }
+}
+</script>
+</body>
+</html> -->
